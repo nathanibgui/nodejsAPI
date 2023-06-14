@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mettre à jour un film</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div id="app" class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Mon Site de Films</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8082/">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8082/films">GET</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8082/nouveaufilm">CREATE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8082/deletefilm">DELETE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8082/modifiefilm">UPDATE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8082/api/v1/docs/doc/#/">DOCS</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <h1>Mettre à jour un film</h1>
+        <form @submit.prevent="modifierFilm">
+            <div class="mb-3">
+                <label for="filmSelect" class="form-label">Sélectionnez un film :</label>
+                <select id="filmSelect" v-model="selectedFilm" class="form-select">
+                    <option value="">-- Choisissez un film --</option>
+                    <option v-for="film in films" :value="film.id">{{ film.titre }}</option>
+                </select>
+            </div>
+            <div v-if="selectedFilm" class="mb-3">
+                <label for="titreInput" class="form-label">Titre :</label>
+                <input id="titreInput" v-model="filmToUpdate.titre" type="text" class="form-control">
+            </div>
+            <div v-if="selectedFilm" class="mb-3">
+                <label for="realisateurInput" class="form-label">Réalisateur :</label>
+                <input id="realisateurInput" v-model="filmToUpdate.realisateur" type="text" class="form-control">
+            </div>
+            <div v-if="selectedFilm" class="mb-3">
+                <label for="anneeInput" class="form-label">Année :</label>
+                <input id="anneeInput" v-model="filmToUpdate.annee" type="number" class="form-control">
+            </div>
+            <button v-if="selectedFilm" type="submit" class="btn btn-primary">Mettre à jour</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                selectedFilm: '',
+                films: [], // Liste des films à récupérer depuis l'API
+                filmToUpdate: {} // Film sélectionné pour la mise à jour
+            },
+            mounted() {
+                // Récupérer la liste des films depuis l'API lors du chargement de la page
+                fetch('/api/v1/films')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.films = data;
+                    })
+                    .catch(error => {
+                        console.error('Une erreur s\'est produite lors de la récupération des films:', error);
+                    });
+            },
+            watch: {
+                selectedFilm(newFilmId) {
+                    // Réinitialiser les données du film sélectionné pour la mise à jour lorsque la sélection change
+                    this.filmToUpdate = this.films.find(film => film.id === newFilmId);
+                }
+            },
+            methods: {
+                modifierFilm() {
+                    // Vérifier si un film a été sélectionné
+                    if (!this.selectedFilm) {
+                        alert('Veuillez sélectionner un film.');
+                        return;
+                    }
+
+                    // Envoyer une requête pour mettre à jour le film à l'API
+                    fetch(`/api/v1/films/${this.selectedFilm}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(this.filmToUpdate)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Film mis à jour avec succès:', data);
+                            alert('Film mis à jour avec succès.');
+                        })
+                        .catch(error => {
+                            console.error('Une erreur s\'est produite lors de la mise à jour du film:', error);
+                            alert('Une erreur s\'est produite lors de la mise à jour du film.');
+                        });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

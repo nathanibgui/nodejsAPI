@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mon site de chaussure</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div id="app" class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Mon Site de chaussure</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8081/">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8081/">GET</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8081/createChaussure">CREATE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8081/deleteChaussures">DELETE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8081/updateChaussures">UPDATE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8081/api/v1/docs/doc/#/">DOCS</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <h1 class="mt-5">Bienvenue sur mon site de chaussures</h1>
+        <p class="lead">Découvrez une sélection de chaussure incroyables</p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Chaussure populaires</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="chaussure in chaussurePopulaires" :key="chaussure">
+                            <td>{{ chaussure }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h2>Nouvelles chaussures</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="chaussure in nouveauxChaussures" :key="chaussure">
+                            <td>{{ chaussure }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                chaussurePopulaires: ['JORDAN', 'PINK', 'DIOR'], // Remplacez par vos données réelle
+                nouveauxChaussures: ['LVMH'] // Remplacez par vos données réelles des nouveaux films
+            },
+            mounted() {
+                // Ici, vous pouvez effectuer des appels API pour récupérer les données des chaussures populaires et nouveaux
+                // et les assigner aux propriétés "chaussuresPopulaires" et "nouveauxChaussures"
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+swagger: '2.0'
+info:
+  title: Documentation de l'API Chaussures
+  description: Documentation de l'API pour gérer les chaussures
+  version: 1.0.0
+basePath: /api
+paths:
+  /chaussures:
+    get:
+      summary: Récupérer toutes les chaussures
+      responses:
+        200:
+          description: Succès - Renvoie la liste des chaussures
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Chaussure'
+    post:
+      summary: Ajouter une nouvelle chaussure
+      parameters:
+        - name: chaussure
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Chaussure'
+      responses:
+        200:
+          description: Succès - Chaussure ajoutée avec succès
+        500:
+          description: Erreur - Une erreur s'est produite lors de l'ajout de la chaussure
+  /chaussures/{id}:
+    get:
+      summary: Récupérer une chaussure spécifique par son ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Succès - Renvoie la chaussure spécifiée
+          schema:
+            $ref: '#/definitions/Chaussure'
+        404:
+          description: Chaussure non trouvée
+    put:
+      summary: Mettre à jour une chaussure existante par son ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+        - name: chaussure
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Chaussure'
+      responses:
+        200:
+          description: Succès - Chaussure mise à jour avec succès
+        404:
+          description: Chaussure non trouvée
+        500:
+          description: Erreur - Une erreur s'est produite lors de la mise à jour de la chaussure
+    delete:
+      summary: Supprimer une chaussure par son ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Succès - Chaussure supprimée avec succès
+        404:
+          description: Chaussure non trouvée
+        500:
+          description: Erreur - Une erreur s'est produite lors de la suppression de la chaussure
+definitions:
+  Chaussure:
+    type: object
+    properties:
+      id:
+        type: integer
+      nom:
+        type: string
+      marque:
+        type: string
+      couleur:
+        type: string
+      taille:
+        type: integer
